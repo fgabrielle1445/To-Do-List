@@ -1,49 +1,112 @@
-import { useState } from 'react'
-import Header from './components/Header'
-import Tasks from './components/Tasks'
-import AddTask from './components/AddTask'
+import React from "react";
+import { useState } from 'react';
+import { FaTimes } from 'react-icons/fa'
+import { FaCheckCircle } from 'react-icons/fa'
+import "./App.css";
+import TextField from '@material-ui/core/TextField';
 
+// Enter into task form
+function Task({ task, index, completeTask, removeTask }) {
+  
+  return (
+    <div
+      className="task"
+      style={{ textDecoration: task.isCompleted ? "line-through" : "" }}
+    >
+      {task.text}
+      <div>
+        <FaCheckCircle 
+                    style={{color: 'coral', cursor: 'pointer'}} onClick={() => completeTask(index)}
+                />
+        <FaTimes 
+                    style={{color: 'coral', cursor: 'pointer', marginLeft: '20px'}}
+                    onClick={() => removeTask(index)} 
+                />
+      </div>
+    </div>
+  );
+}
+
+// Add task
+function AddTasks({ addTask }) {
+  const [value, setValue] = useState("");
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    if (!value) {
+      alert("Please enter a task!");
+      return;
+    }
+    addTask(value);
+    setValue("");
+  };
+
+  // Need to override the textfield's color and make it coral to match my theme
+  return (
+    <form noValidate autoComplete="off" onSubmit={handleSubmit}>
+      <TextField id="outlined-basic" label="Enter task here..." variant="outlined"
+        type="text"
+        className="input"
+        value={value}
+        onChange={e => setValue(e.target.value)}
+      />
+    </form>
+  );
+}
 
 function App() {
-  const [showAddTask, setShowAddTask] = useState(false)
-
   const [tasks, setTasks] = useState([
     {
-        id: 1,
-        text: 'Doctors Appointment',
+      text: "Test Task #1",
+      isCompleted: false
     },
     {
-        id: 2,
-        text: 'Meeting at School',
+      text: "Test Task #2",
+      isCompleted: false
     },
     {
-        id: 3,
-        text: 'Food Shopping',
+      text: "Test Task #3",
+      isCompleted: false
     }
-])
+  ]);
 
 // Add Task
-const addTask = (task) => {
-  const id = Math.floor(Math.random * 10000) + 1
-  const newTask = { id, ...task }
-  setTasks([...tasks, newTask])
-}
+  const addTask = text => {
+    const newTasks = [...tasks, { text }];
+    setTasks(newTasks);
+  };
+
+  // For marking through completed but not deleted tasks
+  const completeTask = ((index) => {
+    const newTasks = [...tasks];
+    newTasks[index].isCompleted = !(newTasks[index].isCompleted);
+    setTasks(newTasks);
+  });
 
 // Delete Task
-const deleteTask = (id) => {
-  setTasks(tasks.filter((task) => task.id !== id)) 
-}
-
-// Toggle Reminder
-const toggleReminder = (id) => {
-  setTasks(tasks.map((task) => task.id === id ? { ...task, reminder: !task.reminder } : task))
-}
+  const removeTask = ((index) => {
+    const newTasks = [...tasks];
+    newTasks.splice(index, 1);
+    setTasks(newTasks);
+  });
 
   return (
-    <div className="container">
-      <Header onAdd={() => setShowAddTask(!showAddTask)} showAdd={showAddTask}/>
-      {showAddTask && <AddTask onAdd={AddTask}/>}
-      {tasks.length > 0 ? (<Tasks tasks={tasks} onDelete = {deleteTask} onToggle = {toggleReminder}/>): ('No Tasks To Show')}
+    <div className="app">
+      <div className="tasks">
+        <div className="header">
+          <h1>To-Do</h1>
+        </div>
+        {tasks.map((task, index) => (
+          <Task
+            key={index}
+            index={index}
+            task={task}
+            completeTask={completeTask}
+            removeTask={removeTask}
+          />
+        ))}
+        <AddTasks addTask={addTask} />
+      </div>
     </div>
   );
 }
