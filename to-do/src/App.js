@@ -95,6 +95,8 @@ function App() {
       <div className="tasks">
         <div className="header">
           <h1>To-Do</h1>
+          <AddTasks addTask={addTask} />
+
         </div>
         {tasks.map((task, id) => (
           <Task
@@ -105,7 +107,6 @@ function App() {
             removeTask={removeTask}
           />
         ))}
-        <AddTasks addTask={addTask} />
       </div>
     </div>
   );

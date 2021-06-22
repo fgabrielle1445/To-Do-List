@@ -4,6 +4,8 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+
+
 ReactDOM.render(
   <React.StrictMode>
     <App />
@@ -18,3 +20,20 @@ reportWebVitals();
 
 
 // Adding the CRUD commands here
+const tasks = [
+  {
+    id: '1',
+    text: 'Test Task #1',
+    isCompleted: false
+  },
+  {
+    id: '2',
+    text: 'Test Task #2',
+    isCompleted: false
+  },
+  {
+    id: '3',
+    text: 'Test Task #3',
+    isCompleted: false
+  }
+]
