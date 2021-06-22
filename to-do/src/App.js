@@ -6,7 +6,7 @@ import "./App.css";
 import TextField from '@material-ui/core/TextField';
 
 // Enter into task form
-function Task({ task, index, completeTask, removeTask }) {
+function Task({ task, id, completeTask, removeTask }) {
   
   return (
     <div
@@ -16,11 +16,11 @@ function Task({ task, index, completeTask, removeTask }) {
       {task.text}
       <div>
         <FaCheckCircle 
-                    style={{color: 'coral', cursor: 'pointer'}} onClick={() => completeTask(index)}
+                    style={{color: 'coral', cursor: 'pointer'}} onClick={() => completeTask(id)}
                 />
         <FaTimes 
                     style={{color: 'coral', cursor: 'pointer', marginLeft: '20px'}}
-                    onClick={() => removeTask(index)} 
+                    onClick={() => removeTask(id)} 
                 />
       </div>
     </div>
@@ -77,16 +77,16 @@ function App() {
   };
 
   // For marking through completed but not deleted tasks
-  const completeTask = ((index) => {
+  const completeTask = ((id) => {
     const newTasks = [...tasks];
-    newTasks[index].isCompleted = !(newTasks[index].isCompleted);
+    newTasks[id].isCompleted = !(newTasks[id].isCompleted);
     setTasks(newTasks);
   });
 
 // Delete Task
-  const removeTask = ((index) => {
+  const removeTask = ((id) => {
     const newTasks = [...tasks];
-    newTasks.splice(index, 1);
+    newTasks.splice(id, 1);
     setTasks(newTasks);
   });
 
@@ -96,10 +96,10 @@ function App() {
         <div className="header">
           <h1>To-Do</h1>
         </div>
-        {tasks.map((task, index) => (
+        {tasks.map((task, id) => (
           <Task
-            key={index}
-            index={index}
+            key={id}
+            id={id}
             task={task}
             completeTask={completeTask}
             removeTask={removeTask}
