@@ -5,6 +5,7 @@ import { FaCheckCircle } from 'react-icons/fa'
 import "./App.css";
 import TextField from '@material-ui/core/TextField';
 
+
 // Enter into task form
 function Task({ task, id, completeTask, removeTask }) {
   
